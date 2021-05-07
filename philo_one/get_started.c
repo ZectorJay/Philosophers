@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 13:50:05 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/07 07:47:56 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/07 12:02:08 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,66 +23,89 @@
 
 pthread_mutex_t	left;
 pthread_mutex_t	right;
+int	forks_counter;
 
-void	*start_philo_life(void *pizda)
+void	*start_life(void *get_info)
 {
-	printf("Philo №%d has started his life\n", (int)pizda);
-	usleep(100);
-	printf("Philo №%d died\n", (int)pizda);
+	t_all *all;
+
+	all = (t_all *)get_info;
+	printf("%ld ms | Philo %d has started his useless existance\n", check_time(), all->philo[all->num].num);
+	if (all->philo[all->num].num % 2 == 0)
+		sleep(1);
+	printf("%ld ms | philo %d died\n", check_time(), all->philo[all->num].num);	
 	return NULL;
 }
 
-void	start_philo(pthread_t *philo, int phil_num, char **argv)
+void	start_philo(pthread_t *thread_num, char **argv, t_all *all)
 {
-	struct timeval current_time;
-	long int timing;
-	void *k;
-
-	gettimeofday(&current_time, 0);
-	timing = current_time.tv_usec;
-	printf("TIME = %ld\n", current_time.tv_usec - timing);
-	k = 0;
-	while ((int)k < phil_num)
+	printf("limit - %d\n", all->info.philo_num);
+	while (++all->num < all->info.philo_num)
 	{
-		pthread_create(&philo[(int)k], NULL, start_philo_life, k);
-		k++;
+		pthread_create(&thread_num[all->info.num], NULL, start_life, all);
+		usleep(10);
 	}
-	k = 0;
-	while ((int)k < phil_num)
-	{
-		pthread_join(philo[(int)k], NULL);
-		k++;
-	}
-	gettimeofday(&current_time, 0);
-	printf("TIME = %ld\n", current_time.tv_usec - timing);
-	pthread_mutex_destroy(&left);
-	pthread_mutex_destroy(&right);
+	all->num = -1;
+	while (++all->num < all->info.philo_num)
+		pthread_join(thread_num[all->info.num], NULL);
+	// pthread_mutex_destroy(&left);
+	// pthread_mutex_destroy(&right);
 }
 
-int main(int argc, char **argv)
+void	check_args(int argc, char **argv, t_info *info)
 {
-	pthread_t	*philo;				// Можно будет вынести в функцию старт_фило
-
-	int	phil_num;
 	if (argc != 5 && argc != 6)
 	{
 		printf("Dude, not enough args. Fix it.\n");
 		exit (0);
 	}
-	phil_num = ft_atoi(argv[1]);
-	if (phil_num <= 0)
+	info->times_eat = -1;
+	info->philo_num = ft_atoi(argv[1]);
+	info->life_time = ft_atoi(argv[2]);
+	info->eating_timer = ft_atoi(argv[3]);
+	info->sleeping_timer = ft_atoi(argv[4]);
+	info->num = -1;
+	if (argc == 6)
+		info->times_eat = ft_atoi(argv[5]);
+	if (info->philo_num <= 0 || info->life_time <= 0 || info->eating_timer <= 0 
+		|| info->sleeping_timer <= 0 || info->times_eat == 0)
 	{
 		printf("Dude, you type something weird in args. Check and fix it.");
 		exit (0);
 	}
-	pthread_mutex_init(&left, NULL);
-	pthread_mutex_init(&right, NULL);
-	philo = malloc(phil_num);
-	if (!philo)
-		printf("error during allocating memory\n");
+}
+
+void	init_philo(t_all *all)
+{
+	int	i;
+
+	i = -1;
+	while (++i < all->info.philo_num)
+	{
+		all->philo[i].death_timer = 0;
+		all->philo[i].num = i;
+		all->philo[i].status = 0;
+	}
+}
+
+int main(int argc, char **argv)
+{
+	pthread_t	*philo;
+	t_all		all;
+
+	check_args(argc, argv, &all.info);
+	// pthread_mutex_init(&left, NULL);
+	// pthread_mutex_init(&right, NULL);
+	philo = malloc(all.info.philo_num);
+	all.philo = malloc(all.info.philo_num);
+	if (!philo || !all.philo)
+		printf("Error during allocating memory\n");
 	else
 	{
-		start_philo(philo, phil_num, argv);
+		init_philo(&all);
+		all.num = -1;
+		gettimeofday(&g_start, 0); 
+		start_philo(philo, argv, &all);
 		free(philo);
 	}
 	exit (0);

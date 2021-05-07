@@ -6,11 +6,21 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 07:14:16 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/07 07:22:47 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/07 10:50:29 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+long int		check_time(void)
+{
+	long int	diff;
+	struct timeval current_time;
+
+	gettimeofday(&current_time, 0);
+	diff = current_time.tv_usec - g_start.tv_usec;
+	return (diff);
+}
 
 static long int		check_num(const char *str, int i)
 {
