@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:55:24 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:48:53 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 19:23:31 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	*odd_philo_num(void *get_info)
 {
@@ -43,13 +43,9 @@ void	*even_philo_num(void *get_info)
 
 	philo = (t_philo *)get_info;
 	if (philo->num % 2 == 0 || philo->num == 0)
-	{
 		eat_sleep_think_loop(philo, 1);
-	}
 	else
-	{
 		eat_sleep_think_loop(philo, 2);
-	}
 	return (NULL);
 }
 
@@ -76,7 +72,7 @@ void	*spy_philo(void *get_info)
 				- all->philo[i].current_meal;
 			if (all->philo[i].death_timer > all->inf.life_time)
 				return (philo_status(all, i, &check, 2));
-		}	
+		}
 	}
 	return (NULL);
 }
@@ -99,7 +95,9 @@ void	*start_philo(pthread_t *thread_num, t_all *all)
 	while (1)
 	{
 		if (all->num == -2)
+		{
 			return (NULL);
+		}
 	}
 	return (NULL);
 }
@@ -116,7 +114,7 @@ int	main(int argc, char **argv)
 		printf("Error during allocating memory\n");
 	else
 	{
-		pthread_mutex_init(&g_output, NULL);
+		init_semaphors(&all);
 		init_philo(&all);
 		all.num = -1;
 		start_philo(thread_num, &all);
