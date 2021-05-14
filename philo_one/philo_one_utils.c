@@ -5,26 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 07:14:16 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/07 10:50:29 by hmickey          ###   ########.fr       */
+/*   Created: 2021/05/11 18:52:37 by hmickey           #+#    #+#             */
+/*   Updated: 2021/05/14 10:32:38 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-long int		check_time(void)
+void	*philo_status(t_all *all, int num, int **array, int flag)
 {
-	long int	diff;
-	struct timeval current_time;
-
-	gettimeofday(&current_time, 0);
-	diff = current_time.tv_usec - g_start.tv_usec;
-	return (diff);
+	pthread_mutex_lock(&g_output);
+	all->num = -2;
+	if (flag == 1)
+		printf("ALL PHILOSOPHERS ARE FULL");
+	else
+		type_message(num, get_time() - all->start, " died\n");
+	free(*array);
+	return (NULL);
 }
 
-static long int		check_num(const char *str, int i)
+static long int	check_num(const char *str, int i)
 {
-	long int a;
+	long int	a;
 
 	a = 0;
 	while (str[i] >= 48 && str[i] <= 57)
@@ -39,10 +41,10 @@ static long int		check_num(const char *str, int i)
 	return (a);
 }
 
-int					ft_atoi(const char *str)
+long int	ft_atoi(const char *str)
 {
-	int			i;
-	int			m;
+	int	i;
+	int	m;
 
 	m = 1;
 	i = 0;
@@ -53,4 +55,39 @@ int					ft_atoi(const char *str)
 	if (m == -1 && check_num(str, i) < 0)
 		return (0);
 	return (m * check_num(str, i));
+}
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	ft_putnbr(long int n)
+{
+	long	a;
+	int		k;
+
+	a = n;
+	k = 0;
+	if (a < 0)
+	{
+		write(1, "-", 1);
+		a *= -1;
+	}
+	if (a >= 10)
+	{
+		ft_putnbr(a / 10);
+		k = a % 10 + 48;
+		write(1, &k, 1);
+	}
+	else
+	{
+		k = a % 10 + 48;
+		write(1, &k, 1);
+	}
 }
