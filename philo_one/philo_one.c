@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:55:24 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:29:41 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 10:38:25 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*spy_philo(void *get_info)
 	return (NULL);
 }
 
-void	*start_philo(pthread_t *thread_num, char **argv, t_all *all)
+void	*start_philo(pthread_t *thread_num, t_all *all)
 {
 	all->start = get_time();
 	while (++all->num <= all->inf.philo_num)
@@ -119,7 +119,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_init(&g_output, NULL);
 		init_philo(&all);
 		all.num = -1;
-		start_philo(thread_num, argv, &all);
+		start_philo(thread_num, &all);
 		detach_and_destroy(thread_num, &all);
 		free(thread_num);
 		free(all.philo);
