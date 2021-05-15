@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:55:24 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 16:35:29 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 19:23:31 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 void	*odd_philo_num(void *get_info)
 {
@@ -73,7 +73,6 @@ void	*spy_philo(void *get_info)
 			if (all->philo[i].death_timer > all->inf.life_time)
 				return (philo_status(all, i, &check, 2));
 		}
-		usleep(200);
 	}
 	return (NULL);
 }

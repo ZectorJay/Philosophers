@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 08:41:57 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:33:48 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/15 17:31:57 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,17 @@ int	intchr(int *row, int find)
 	return (0);
 }
 
+/*
+**	@brief	counts lenght integer by its base
+**
+**	@param	num			philosopher number
+**	@param	timer		how many time left since programm start
+**	@param	message		message to type
+*/
 void	type_message(int num, int timer, char *message)
 {
 	ft_putnbr(timer);
 	write(1, " ", 1);
-	ft_putnbr(num);
-	ft_putstr(message);
+	ft_putnbr(num + 1);
+	write(1, message, ft_strlen(message));
 }

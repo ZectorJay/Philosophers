@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 07:14:28 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:32:13 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/15 15:02:04 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+# define RED            "\033[1;31m"
+# define RESET          "\033[0m"
+# define YELLOW         "\033[1;33m"
 
 pthread_mutex_t	g_output;
 

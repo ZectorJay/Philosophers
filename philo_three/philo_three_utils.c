@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two_utils.c                                  :+:      :+:    :+:   */
+/*   philo_three_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:52:37 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 15:43:16 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 18:45:25 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 void	*philo_status(t_all *all, int num, int **array, int flag)
 {
@@ -19,7 +19,7 @@ void	*philo_status(t_all *all, int num, int **array, int flag)
 	if (flag == 1)
 		printf("ALL PHILOSOPHERS ARE FULL");
 	else
-		type_message(num, get_time() - all->start, "died\n");
+		type_message(num, get_time() - all->start, " died\n");
 	free(*array);
 	return (NULL);
 }

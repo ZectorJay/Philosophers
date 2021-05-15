@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 07:14:28 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 15:37:04 by hmickey          ###   ########.fr       */
+/*   Created: 2021/05/15 11:16:15 by hmickey           #+#    #+#             */
+/*   Updated: 2021/05/15 15:01:59 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <pthread.h>
-# include <sys/time.h>
-# include <fcntl.h>
-# include <semaphore.h>
-# include <sys/types.h>
-
-# define RED            "\033[1;31m"
-# define RESET          "\033[0m"
-# define YELLOW         "\033[1;33m"
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <semaphore.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <pthread.h>
 
 typedef struct s_info
 {
@@ -84,4 +79,5 @@ void		eat_sleep_think_loop(t_philo *philo, int flag);
 int			*init_variables(t_all *all, int *k);
 void		*detach_and_destroy(pthread_t *thread_num, t_all *all);
 int			init_semaphors(t_all *all);
+
 #endif

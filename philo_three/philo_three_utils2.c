@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two_utils2.c                                 :+:      :+:    :+:   */
+/*   philo_three_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:53:53 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 16:34:18 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 19:10:00 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 long	get_time(void)
 {
@@ -26,7 +26,7 @@ void	my_usleep(long time)
 
 	t = get_time();
 	while (get_time() - t < time)
-		usleep(100);
+		usleep(1);
 }
 
 void	ft_putstr(char *str)

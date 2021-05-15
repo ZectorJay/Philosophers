@@ -6,11 +6,11 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 19:06:36 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 17:11:09 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/15 13:05:11 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 int	*init_variables(t_all *all, int *k)
 {

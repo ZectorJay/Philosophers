@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two_utils3.c                                 :+:      :+:    :+:   */
+/*   philo_three_utils3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 08:41:57 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 17:17:30 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/14 19:30:53 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 void	*detach_and_destroy(pthread_t *thread_num, t_all *all)
 {
@@ -20,6 +20,12 @@ void	*detach_and_destroy(pthread_t *thread_num, t_all *all)
 	all->num = -1;
 	while (++all->num <= all->inf.philo_num)
 		pthread_join(thread_num[all->num], NULL);
+	sem_close(all->sem.forks);
+	sem_close(all->sem.meals);
+	sem_close(all->sem.output);
+	sem_unlink("/semaphor");
+	sem_unlink("/forks");
+	sem_unlink("/meals");
 	return (NULL);
 }
 
@@ -34,27 +40,14 @@ int	intchr(int *row, int find)
 	return (0);
 }
 
-/*
-**      @brief  counts lenght integer by its base
-**
-**      @param  num                     philosopher number
-**      @param  timer           how many time left since programm start
-**      @param  message         message to type
-*/
-void    type_message(int num, int timer, char *message)
+void	type_message(int num, int timer, char *message)
 {
-        ft_putnbr(timer);
-        write(1, " ", 1);
-        ft_putnbr(num + 1);
-        // if (message[4] == 'e')
-        //         write(1, "\033[38;2;0;255;0m", 16);
-		if (message[0] == 'd')
-		{
-				write (1, " ", 1);
-                write(1, "\033[1;3;38;2;255;255;255m", 24);
-		}
-		write(1, message, ft_strlen(message));
+	ft_putnbr(timer);
+	write(1, " ", 1);
+	ft_putnbr(num + 1);
+	ft_putstr(message);
 }
+
 int	init_semaphors(t_all *all)
 {
 	sem_unlink("/semaphor");

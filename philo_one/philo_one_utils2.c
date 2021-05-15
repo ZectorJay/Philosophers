@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:53:53 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:15:05 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/15 14:56:14 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	my_usleep(long time)
 
 	t = get_time();
 	while (get_time() - t < time)
-		usleep(1);
+		usleep(100);
 }
 
 void	ft_putstr(char *str)
