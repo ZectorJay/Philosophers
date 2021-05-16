@@ -26,31 +26,25 @@ void	my_usleep(long time)
 
 	t = get_time();
 	while (get_time() - t < time)
-		usleep(1);
+		usleep(100);
 }
 
-void	ft_putstr(char *str)
+void	ft_putstr(char *str) // МОЖНО УДАЛИТЬ!
 {
 	write (1, str, ft_strlen(str));
 }
 
 void	init_philo(t_all *all)
 {
-	int	i;
-
-	i = -1;
-	while (++i < all->inf.philo_num)
-	{
-		all->philo[i].previous_meal = 0;
-		all->philo[i].current_meal = 0;
-		all->philo[i].death_timer = 0;
-		all->philo[i].num = i;
-		all->philo[i].times_eat = 0;
-		all->philo[i].eating_timer = all->inf.eating_timer;
-		all->philo[i].sleeping_timer = all->inf.sleeping_timer;
-		all->philo[i].info = &all->inf;
-		all->philo[i].sem = &all->sem;
-	}
+	all->philo.status = 0;
+	all->philo.current_meal = 0;
+	all->philo.death_timer = 0;
+	all->philo.num = 0;
+	all->philo.times_eat = 0;
+	all->philo.eating_timer = all->inf.eating_timer;
+	all->philo.sleeping_timer = all->inf.sleeping_timer;
+	all->philo.info = &all->inf;
+	all->philo.sem = &all->sem;
 }
 
 void	check_args(int argc, char **argv, t_info *info)

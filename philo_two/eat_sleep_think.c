@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 19:06:36 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 17:11:09 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/16 11:27:36 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,18 @@ void	eat_sleep_think_loop(t_philo *philo, int flag)
 void	eating(t_philo *philo)
 {
 	sem_wait(philo->sem->forks);
-	philo->previous_meal = philo->current_meal;
 	sem_wait(philo->sem->output);
 	type_message(philo->num, get_time() - philo->start_timer,
 		" has taken a fork\n");
-	sem_post(philo->sem->output);
-	my_usleep(philo->eating_timer);
-	sem_post(philo->sem->forks);
+	type_message(philo->num, get_time() - philo->start_timer,
+		" has taken a fork\n");
 	philo->current_meal = get_time() - philo->start_timer;
-	sem_wait(philo->sem->output);
 	type_message(philo->num, get_time() - philo->start_timer,
 		" is eating\n");
-	philo->times_eat += 1;
 	sem_post(philo->sem->output);
+	sem_post(philo->sem->forks);
+	my_usleep(philo->eating_timer);
+	philo->times_eat += 1;
 }
 
 void	sleeping(t_philo *philo)

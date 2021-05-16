@@ -6,7 +6,7 @@
 #    By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/03 15:52:53 by hmickey           #+#    #+#              #
-#    Updated: 2021/05/15 13:05:13 by hmickey          ###   ########.fr        #
+#    Updated: 2021/05/16 13:10:03 by hmickey          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS		= ${SRCS:.c=.o}
 CC			= gcc
 RM			= rm -rf
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 .c.o:		= ${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 

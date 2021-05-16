@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:55:24 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/15 14:56:39 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/15 19:19:51 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*spy_philo(void *get_info)
 			if (all->philo[i].death_timer > all->inf.life_time)
 				return (philo_status(all, i, &check, 2));
 		}
-		usleep(5000);
+//		usleep(5000);
 	}
 	return (NULL);
 }

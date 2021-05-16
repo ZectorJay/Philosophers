@@ -12,15 +12,16 @@
 
 #include "philo_three.h"
 
-void	*philo_status(t_all *all, int num, int **array, int flag)
+void	*philo_status(t_all *all, int num, int flag)
 {
 	sem_wait(all->sem.output);
-	all->num = -2;
 	if (flag == 1)
 		printf("ALL PHILOSOPHERS ARE FULL");
 	else
-		type_message(num, get_time() - all->start, " died\n");
-	free(*array);
+	{
+		type_message(num, get_time() - all->philo.start_timer, " died\n");
+		sem_post(all->sem.status);
+	}
 	return (NULL);
 }
 

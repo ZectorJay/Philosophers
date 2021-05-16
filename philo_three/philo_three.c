@@ -12,115 +12,110 @@
 
 #include "philo_three.h"
 
-void	*odd_philo_num(void *get_info)
+void	*odd_philo_num(t_all *all)
 {
-	t_philo	*philo;
+	pthread_t *thread;
 
-	philo = (t_philo *) get_info;
-	if (philo->num % 2 == 0 && philo->num != philo->info->philo_num - 1)
-	{
-		eat_sleep_think_loop(philo, 1);
-	}
-	else if (philo->info->philo_num - 1 != philo->num)
-	{
-		eat_sleep_think_loop(philo, 2);
-	}
+	thread = malloc(sizeof(pthread_t));
+	sem_wait(all->sem.status);
+	pthread_create(thread, NULL, spy_himself, all);
+	if (all->num % 2 == 0 && all->philo.num != all->inf.philo_num - 1)
+		eat_sleep_think_loop(&all->philo, 1);
+	else if (all->inf.philo_num - 1 != all->philo.num)
+		eat_sleep_think_loop(&all->philo, 2);
 	else
 	{
 		while (1)
 		{
-			thinking(philo);
-			eating(philo);
-			sleeping(philo);
+			thinking(&all->philo);
+			eating(&all->philo);
+			sleeping(&all->philo);
 		}
 	}
 	return (NULL);
 }
 
-void	*even_philo_num(void *get_info)
+void	*even_philo_num(t_all *all)
 {
-	t_philo	*philo;
+	pthread_t *thread;
 
-	philo = (t_philo *)get_info;
-	if (philo->num % 2 == 0 || philo->num == 0)
-		eat_sleep_think_loop(philo, 1);
+	thread = malloc(sizeof(pthread_t));
+	sem_wait(all->sem.status);
+	pthread_create(thread, NULL, spy_himself, all);
+	if (all->philo.num % 2 == 0 || all->philo.num == 0)
+		eat_sleep_think_loop(&all->philo, 1);
 	else
-		eat_sleep_think_loop(philo, 2);
+		eat_sleep_think_loop(&all->philo, 2);
 	return (NULL);
 }
 
-void	*spy_philo(void *get_info)
+void	*spy_philo(t_all *all)
 {
-	int			i;
-	t_all	 	*all;
-	int			*check;
-	int			k;
+	int	i;
+	pthread_t *death;
 
-	all = (t_all *)get_info;
-	check = init_variables(all, &k);
+	i = 0;
+	death = malloc (sizeof(pthread_t));
+	pthread_create(death, NULL, check_death, all);
 	while (1)
 	{
-		i = -1;
-		while (++i < all->inf.philo_num)
+		if (all->inf.times_eat > 0)
 		{
-			if (all->philo[i].times_eat >= all->inf.times_eat
-				&& !intchr(check, i))
-				check[++k] = i;
-			if (k >= all->inf.philo_num - 1 && all->inf.times_eat != -1)
-				return (philo_status(all, 0, &check, 1));
-			all->philo[i].death_timer = get_time() - all->start
-				- all->philo[i].current_meal;
-			if (all->philo[i].death_timer > all->inf.life_time)
-				return (philo_status(all, i, &check, 2));
+			sem_wait(all->sem.meals);
+			i++;
+			if (i == all->inf.philo_num)
+				return(philo_status(all, 0, 1));
 		}
+		else
+			usleep(10);
 	}
 	return (NULL);
 }
 
-void	*start_philo(pthread_t *thread_num, t_all *all)
+void	*start_philo(t_all *all)
 {
-	all->start = get_time();
-	while (++all->num <= all->inf.philo_num)
+	int	num;
+
+	all->philo.start_timer = get_time();
+	while(++all->num < all->inf.philo_num)
 	{
-		all->philo[all->num].start_timer = all->start;
-		if (all->inf.philo_num % 2 == 0 && all->num != all->inf.philo_num)
-			pthread_create(&thread_num[all->num], NULL, even_philo_num,
-				&all->philo[all->num]);
-		else if (all->inf.philo_num % 2 != 0 && all->num != all->inf.philo_num)
-			pthread_create(&thread_num[all->num], NULL, odd_philo_num,
-				&all->philo[all->num]);
-		if (all->num == all->inf.philo_num)
-			pthread_create(&thread_num[all->num], NULL, spy_philo, all);
-	}
-	while (1)
-	{
-		if (all->num == -2)
+		num = fork();
+		all->pid[all->num] = num;
+		if (num == 0 && all->inf.philo_num % 2 == 0)
 		{
-			return (NULL);
+			all->philo.num = all->num + 1;
+			even_philo_num(all);
+			exit (0);
+		}
+		if (num == 0 && all->inf.philo_num % 2 != 0)
+		{
+			all->philo.num = all->num + 1;
+			odd_philo_num(all);
+			exit (0);
 		}
 	}
-	return (NULL);
+	usleep(10000);
+	return (spy_philo(all));
 }
 
 int	main(int argc, char **argv)
 {
-	pthread_t	*thread_num;
 	t_all		all;
 
 	check_args(argc, argv, &all.inf);
-	thread_num = malloc(sizeof(pthread_t *) * all.inf.philo_num + 1);
-	all.philo = malloc(sizeof(t_philo *) * all.inf.philo_num + 1);
-	if (!thread_num || !all.philo)
-		printf("Error during allocating memory\n");
-	else
+	if (!init_semaphors(&all))
 	{
-		init_semaphors(&all);
-		init_philo(&all);
-		all.num = -1;
-		start_philo(thread_num, &all);
-		detach_and_destroy(thread_num, &all);
-		free(thread_num);
-		free(all.philo);
+		printf("ERROR DURING INITIALIZATION SEMAPHORS\n");
+		return (0);
 	}
+	init_philo(&all);
+	all.num = -1;
+	all.pid = malloc(sizeof(pid_t) * all.inf.philo_num);
+	if (!all.pid)
+	{
+		printf("ERROR DURING ALLOCATING MEMORY\n");
+		return (0);
+	}
+	start_philo(&all);
 	return (0);
 }

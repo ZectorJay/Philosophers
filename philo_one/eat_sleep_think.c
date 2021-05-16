@@ -6,7 +6,7 @@
 /*   By: hmickey <hmickey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 19:06:36 by hmickey           #+#    #+#             */
-/*   Updated: 2021/05/14 10:31:00 by hmickey          ###   ########.fr       */
+/*   Updated: 2021/05/16 11:29:24 by hmickey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,23 @@ void	eat_sleep_think_loop(t_philo *philo, int flag)
 void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->left);
-	pthread_mutex_lock(philo->right);
-	philo->previous_meal = philo->current_meal;
 	pthread_mutex_lock(&g_output);
 	type_message(philo->num, get_time() - philo->start_timer,
 		" has taken a fork\n");
 	pthread_mutex_unlock(&g_output);
-	my_usleep(philo->eating_timer);
-	pthread_mutex_unlock(&philo->left);
-	pthread_mutex_unlock(philo->right);
+	pthread_mutex_lock(philo->right);
 	pthread_mutex_lock(&g_output);
+	philo->previous_meal = philo->current_meal;
+	type_message(philo->num, get_time() - philo->start_timer,
+		" has taken a fork\n");
 	philo->current_meal = get_time() - philo->start_timer;
 	type_message(philo->num, get_time() - philo->start_timer,
 		" is eating\n");
-	philo->times_eat += 1;
 	pthread_mutex_unlock(&g_output);
+	my_usleep(philo->eating_timer);
+	philo->times_eat += 1;
+	pthread_mutex_unlock(&philo->left);
+	pthread_mutex_unlock(philo->right);
 }
 
 void	sleeping(t_philo *philo)
