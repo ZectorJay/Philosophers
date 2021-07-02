@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"__config": "c"
-	},
-	"files.exclude": {
-		"*.o": true,
-		"*/*.o": true
-	}
-}
